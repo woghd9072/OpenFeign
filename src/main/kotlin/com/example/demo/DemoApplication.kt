@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 	runApplication<DemoApplication>(*args)
 }
 
-@FeignClient(name = "feign-client", url = "http://localhost:8081")
+@FeignClient(name = "feign-client", url = "http://localhost:8080")
 interface Client {
 	@GetMapping("/test")
 	fun test(): String
@@ -26,5 +26,10 @@ class Controller(private val client: Client) {
 	@GetMapping
 	fun testFeign(): String {
 		return client.test()
+	}
+
+	@GetMapping("/test")
+	fun helloFeign(): String {
+		return "Hello, Feign!"
 	}
 }
