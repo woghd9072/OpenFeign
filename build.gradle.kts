@@ -7,41 +7,51 @@ plugins {
 	kotlin("plugin.spring") version "1.4.21"
 }
 
-group = "com.example"
-version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
-repositories {
-	mavenCentral()
-	maven { url = uri("https://repo.spring.io/milestone") }
+allprojects {
+	group = "com.example"
+	version = "0.0.1-SNAPSHOT"
+
+	repositories {
+		mavenCentral()
+		maven { url = uri("https://repo.spring.io/milestone") }
+	}
 }
 
 extra["springCloudVersion"] = "2020.0.0"
 
-dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+subprojects {
+	apply(plugin = "org.springframework.boot")
+	apply(plugin = "io.spring.dependency-management")
+	apply(plugin = "org.jetbrains.kotlin.jvm")
+	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
-	implementation("io.github.microutils:kotlin-logging-jvm:2.0.4")
-}
+	dependencies {
+		implementation("org.springframework.boot:spring-boot-starter-web")
+		implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+		implementation("org.jetbrains.kotlin:kotlin-reflect")
+		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+		implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+		testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+		implementation("io.github.microutils:kotlin-logging-jvm:2.0.4")
 	}
-}
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "1.8"
+	dependencyManagement {
+		imports {
+			mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+		}
 	}
-}
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+	tasks.withType<KotlinCompile> {
+		kotlinOptions {
+			freeCompilerArgs = listOf("-Xjsr305=strict")
+			jvmTarget = "1.8"
+		}
+	}
+
+	tasks.withType<Test> {
+		useJUnitPlatform()
+	}
 }

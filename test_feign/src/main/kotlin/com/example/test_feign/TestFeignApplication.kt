@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.test_feign
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -9,27 +9,27 @@ import org.springframework.web.bind.annotation.RestController
 
 @EnableFeignClients
 @SpringBootApplication
-class DemoApplication
+class TestFeignApplication
 
 fun main(args: Array<String>) {
-	runApplication<DemoApplication>(*args)
+    runApplication<TestFeignApplication>(*args)
 }
 
-@FeignClient(name = "feign-client", url = "http://localhost:8081", configuration = [DemoFeignConfiguration::class])
+@FeignClient(name = "feign-client", url = "http://localhost:8081")
 interface Client {
-	@GetMapping("/test")
-	fun test(): String
+    @GetMapping("/test")
+    fun test(): String
 }
 
 @RestController
 class Controller(private val client: Client) {
-	@GetMapping
-	fun testFeign(): String {
-		return client.test()
-	}
+    @GetMapping
+    fun testFeign(): String {
+        return client.test()
+    }
 
-	@GetMapping("/test")
-	fun helloFeign(): String {
-		return "Hello, Feign!"
-	}
+    @GetMapping("/test")
+    fun helloFeign(): String {
+        return "Hello, Feign!"
+    }
 }

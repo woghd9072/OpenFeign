@@ -1,13 +1,15 @@
-package com.example.demo
+package com.example.test_feign
 
 import feign.*
 import feign.Util.*
 import feign.codec.ErrorDecoder
 import mu.KotlinLogging
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import java.util.concurrent.TimeUnit
 
-class DemoFeignConfiguration {
+@Configuration
+class TestConfig {
     @Bean
     fun feignRetryer(): Retryer {
         return Retryer.Default(200, 800, 3)
