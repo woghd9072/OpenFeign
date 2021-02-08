@@ -39,7 +39,7 @@ class TestConfig {
 class DemoErrorDecoder : ErrorDecoder {
     override fun decode(methodKey: String?, response: Response?): Exception {
         return when (response?.status()) {
-            in 400..599 -> RetryableException(response!!.status(), response.reason(), response.request().httpMethod(), null, response.request())
+            in 500..599 -> RetryableException(response!!.status(), response.reason(), response.request().httpMethod(), null, response.request())
             else -> Exception("${response?.status()} Error ${response?.reason()}")
         }
     }
