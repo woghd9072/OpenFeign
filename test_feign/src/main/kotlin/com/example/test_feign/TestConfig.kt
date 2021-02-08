@@ -17,7 +17,7 @@ class TestConfig {
 
     @Bean
     fun feignErrorDecoder(): ErrorDecoder {
-        return DemoErrorDecoder()
+        return FeignErrorDecoder()
     }
 
     @Bean
@@ -36,7 +36,7 @@ class TestConfig {
     }
 }
 
-class DemoErrorDecoder : ErrorDecoder {
+class FeignErrorDecoder : ErrorDecoder {
     override fun decode(methodKey: String?, response: Response?): Exception {
         return when (response?.status()) {
             in 500..599 -> RetryableException(response!!.status(), response.reason(), response.request().httpMethod(), null, response.request())
