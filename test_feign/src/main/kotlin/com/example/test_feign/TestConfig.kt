@@ -31,6 +31,11 @@ class TestConfig {
     }
 
     @Bean
+    fun feignRequestInterceptor(): RequestInterceptor {
+        return RequestInterceptor { template -> template.header("key", "123456") }
+    }
+
+    @Bean
     fun feignLogger(): Logger {
         return FeignClientLogger()
     }
