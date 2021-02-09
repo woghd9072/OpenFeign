@@ -51,7 +51,7 @@ class FeignErrorDecoder : ErrorDecoder {
 }
 
 class FeignClientLogger : Logger() {
-    private val logger = KotlinLogging.logger {  }
+    private val logger = KotlinLogging.logger { }
 
     override fun logRequest(configKey: String?, logLevel: Level?, request: Request?) {
         if (request == null)
@@ -88,23 +88,22 @@ class FeignClientLogger : Logger() {
             (if (response.reason() != null && logLevel!! > Level.NONE) " " + response.reason() else "")
         feignResponse.duration = elapsedTime
 
-        if (logLevel!!.ordinal >= Level.HEADERS.ordinal) {
-            for (field in response.headers().keys) {
-                for (value in valuesOrEmpty(response.headers(), field)) {
-                    feignResponse.addHeader(field, value)
-                }
-            }
 
-            if (response.body() != null && !(status == 204 || status == 205)) {
-                val bodyData: ByteArray = toByteArray(response.body().asInputStream())
-                if (logLevel.ordinal >= Level.FULL.ordinal && bodyData.isNotEmpty()) {
-                    feignResponse.body = decodeOrDefault(bodyData, UTF_8, "Binary data")
-                }
-                logger.info { feignResponse.toString() }
-                return response.toBuilder().body(bodyData).build()
-            } else {
-                logger.info { feignResponse.toString() }
+        for (field in response.headers().keys) {
+            for (value in valuesOrEmpty(response.headers(), field)) {
+                feignResponse.addHeader(field, value)
             }
+        }
+
+        if (response.body() != null && !(status == 204 || status == 205)) {
+            val bodyData: ByteArray = toByteArray(response.body().asInputStream())
+            if (bodyData.isNotEmpty()) {
+                feignResponse.body = decodeOrDefault(bodyData, UTF_8, "Binary data")
+            }
+            logger.info { feignResponse.toString() }
+            return response.toBuilder().body(bodyData).build()
+        } else {
+            logger.info { feignResponse.toString() }
         }
         return response
     }
