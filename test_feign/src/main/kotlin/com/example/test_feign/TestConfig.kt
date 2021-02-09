@@ -108,6 +108,10 @@ class FeignClientLogger : Logger() {
         return response
     }
 
+    override fun logRetry(configKey: String?, logLevel: Level?) {
+        logger.info { "Retry $configKey" }
+    }
+
     override fun log(p0: String?, p1: String?, vararg p2: Any?) {}
 }
 
