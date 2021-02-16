@@ -27,9 +27,4 @@ class Controller(private val client: Client) {
     fun testFeign(): String {
         return client.test()
     }
-
-    @GetMapping("/test")
-    fun helloFeign(): String {
-        return "Hello, Feign!"
-    }
 }

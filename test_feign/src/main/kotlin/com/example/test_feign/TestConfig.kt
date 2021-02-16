@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 class TestConfig {
     @Bean
     fun feignRetryer(): Retryer {
-        return Retryer.Default(1000, 1000, 3)
+        return Retryer.Default(3000, 3000, 3)
     }
 
     @Bean
@@ -27,7 +27,7 @@ class TestConfig {
 
     @Bean
     fun feignRequestOption(): Request.Options {
-        return Request.Options(1000, TimeUnit.MILLISECONDS, 5000, TimeUnit.MILLISECONDS, true)
+        return Request.Options(5000, TimeUnit.MILLISECONDS, 5000, TimeUnit.MILLISECONDS, true)
     }
 
     @Bean
