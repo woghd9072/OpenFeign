@@ -1,0 +1,6 @@
+feign:
+  httpclient:
+    max-connections: 256
+    max-connections-per-route: 128
+    time-to-live: 10
+    time-to-live-unit: minutes
